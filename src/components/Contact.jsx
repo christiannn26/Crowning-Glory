@@ -1,7 +1,47 @@
+import { useState } from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
 
 export default function Contact() {
   const sectionRef = useScrollReveal();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({ type: '', text: '' });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage({ type: '', text: '' });
+
+    try {
+      const response = await fetch('https://services.leadconnectorhq.com/hooks/GYZ39pdKye0Capju5IRK/webhook-trigger/7f51d6e9-1e42-4f2d-9ae8-1cb59c6f75ca', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setSubmitMessage({ type: 'success', text: 'Thank you. Your message has been received.' });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setSubmitMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+      }
+    } catch (error) {
+      setSubmitMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="section" id="contact" ref={sectionRef}>
@@ -43,12 +83,24 @@ export default function Contact() {
           </div>
         </div>
 
-        <form className="contact-form" data-reveal data-reveal-delay="3" onSubmit={(e) => e.preventDefault()}>
-          <input type="text" placeholder="Your Name" id="contact-name" />
-          <input type="email" placeholder="Your Email" id="contact-email" />
-          <input type="text" placeholder="Subject" id="contact-subject" />
-          <textarea placeholder="Your Message" id="contact-message" />
-          <button type="submit">Send Message</button>
+        <form className="contact-form" data-reveal data-reveal-delay="3" onSubmit={handleSubmit}>
+          <input type="text" name="name" placeholder="Your Name" id="contact-name" value={formData.name} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Your Email" id="contact-email" value={formData.email} onChange={handleChange} required />
+          <input type="text" name="subject" placeholder="Subject" id="contact-subject" value={formData.subject} onChange={handleChange} required />
+          <textarea name="message" placeholder="Your Message" id="contact-message" value={formData.message} onChange={handleChange} required />
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+          </button>
+          {submitMessage.text && (
+            <p style={{
+              color: submitMessage.type === 'success' ? 'var(--gold)' : '#ff4444',
+              marginTop: '1rem',
+              textAlign: 'center',
+              fontWeight: 500
+            }}>
+              {submitMessage.text}
+            </p>
+          )}
         </form>
       </div>
     </section>
