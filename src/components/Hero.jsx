@@ -12,7 +12,7 @@ export default function Hero() {
       </p>
       <a
         className="hero-cta"
-        href="https://links.blissfulbeauty.online/widget/bookings/crowning-glory-booking"
+        href="https://business.crowningglory.me/widget/bookings/crowninggloryleadsbookinglink"
         target="_blank"
         rel="noopener noreferrer"
       >
