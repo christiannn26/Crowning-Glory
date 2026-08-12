@@ -86,7 +86,7 @@ export default function Contact() {
         <form className="contact-form" data-reveal data-reveal-delay="3" onSubmit={handleSubmit}>
           <input type="text" name="name" placeholder="Your Name" id="contact-name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Your Email" id="contact-email" value={formData.email} onChange={handleChange} required />
-          <input type="tel" name="phone" placeholder="Your Phone" id="contact-phone" value={formData.phone} onChange={handleChange} required />
+          <input type="tel" name="phone" placeholder="Your contact number" id="contact-phone" value={formData.phone} onChange={handleChange} required />
           <textarea name="message" placeholder="Your Message" id="contact-message" value={formData.message} onChange={handleChange} required />
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Sending...' : 'Send Message'}
