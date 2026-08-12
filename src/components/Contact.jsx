@@ -6,7 +6,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
+    phone: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,7 +22,7 @@ export default function Contact() {
     setSubmitMessage({ type: '', text: '' });
 
     try {
-      const response = await fetch('https://services.leadconnectorhq.com/hooks/GYZ39pdKye0Capju5IRK/webhook-trigger/7f51d6e9-1e42-4f2d-9ae8-1cb59c6f75ca', {
+      const response = await fetch('https://services.leadconnectorhq.com/hooks/mk3bCADj48efgNhIj5Dc/webhook-trigger/b791b4c8-afae-4d6a-af14-1ab8cabcd08c', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export default function Contact() {
 
       if (response.ok) {
         setSubmitMessage({ type: 'success', text: 'Thank you. Your message has been received.' });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', email: '', phone: '', message: '' });
       } else {
         setSubmitMessage({ type: 'error', text: 'Something went wrong. Please try again.' });
       }
@@ -86,7 +86,7 @@ export default function Contact() {
         <form className="contact-form" data-reveal data-reveal-delay="3" onSubmit={handleSubmit}>
           <input type="text" name="name" placeholder="Your Name" id="contact-name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Your Email" id="contact-email" value={formData.email} onChange={handleChange} required />
-          <input type="text" name="subject" placeholder="Subject" id="contact-subject" value={formData.subject} onChange={handleChange} required />
+          <input type="tel" name="phone" placeholder="Your Phone" id="contact-phone" value={formData.phone} onChange={handleChange} required />
           <textarea name="message" placeholder="Your Message" id="contact-message" value={formData.message} onChange={handleChange} required />
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Sending...' : 'Send Message'}
